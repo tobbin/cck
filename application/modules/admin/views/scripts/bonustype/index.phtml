@@ -1,0 +1,42 @@
+<?php
+    $url = "{$this->baseUrl()}/admin/bonustype/grid";
+?>
+<script type="text/javascript">
+$(document).ready(function(){
+    $(document).pngFix( );
+    
+    $("#flex1").flexigrid({
+	url: '<?=$url?>',
+	dataType: 'json',
+	colModel : [
+                {display: 'No', name : 'id', width : 20, sortable : true, align: 'left'},
+		{display: 'Name', name : 'name', width : 50, sortable : true, align: 'left'},
+        {display: 'Options', name : 'options', width : 130, sortable : true, align: 'left'}
+		],
+	buttons : [            
+		{name: 'Add new type', bclass: 'add', onpress : test},               		
+		{separator: true}
+		],
+	searchitems : [
+		],
+	sortname: "pin",
+	sortorder: "asc",
+	usepager: true,
+	title: 'Bonus type',
+	useRp: true,
+	rp: 15,
+	showTableToggleBtn: true,
+	width: 700,
+	height: 200
+});  
+});
+function test(com) {
+ if (com == 'Add new type') {
+                location.href='<?php echo $this->baseUrl() ?>/admin/bonustype/add';
+        }
+}
+</script>
+<div id="page-heading">
+		<h1>Bonustype</h1>
+	</div>
+<table id="flex1"></table>

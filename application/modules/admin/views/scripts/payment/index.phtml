@@ -1,0 +1,65 @@
+<?php
+    $url = "{$this->baseUrl()}/admin/payment/billdetailsgrid";
+?>
+<script type="text/javascript">
+    
+$(document).ready(function(){           
+    $("#flexme").flexigrid({
+       url: '<?=$url?>',
+       dataType: 'json',
+       colModel : [
+               {display: 'No', name :'id', width : 30, sortable :true, align: 'left'},
+               {display: 'Category', name :'category', width : 180,sortable : true, align: 'left'},
+               {display: 'Type', name :'type', width : 150,sortable : true, align: 'left'},
+               {display: 'Date', name :'date', width : 100,sortable : true, align: 'left'},
+               {display: 'Amount', name :'amount', width : 100,sortable : true, align: 'left'},
+               {display: 'Options', name :'options', width : 100,sortable : true, align: 'left'}               
+           ],
+	buttons : [
+		{name: 'Pay', bclass: 'Add', onpress : test},               
+		{separator: true}
+		],
+
+        searchitems : [
+            {display: 'category', name : 'category'},
+            {display: 'date', name : 'date', isdefault: true}
+            ],
+        sortname: "date",
+        sortorder: "DESC",
+        usepager: true,
+        title: 'Transactions',
+        useRp: true,
+        rp: 5,
+        onSubmit: addFormData,
+        showTableToggleBtn: true,
+        width: 700,
+        height: 200
+        
+    }); 
+    
+   $('#transSearch').submit(function (){
+        $('#flexme').flexOptions({newp: 1}).flexReload();
+        return false;
+    })
+});
+function test(com, grid) {
+    var id = $('.trSelected td div:first-child').html();  
+        if (com == 'Pay') {               
+                location.href='<?php echo $this->baseUrl() ?>/admin/payment/paybill';
+        }
+}
+
+function addFormData(){
+//passing a form object to serializeArray will get the valid data from all the objects, but, if the you pass a non-form object, you have to specify the input elements that the data will come from
+var dt = $('#transSearch').serializeArray();
+$("#flexme").flexOptions({params: dt});
+return true;
+}
+
+</script>
+
+<div id="page-heading">
+		<h1>Payment Details</h1>
+	</div>
+<?php echo $this->form; ?>
+<table id="flexme"></table>

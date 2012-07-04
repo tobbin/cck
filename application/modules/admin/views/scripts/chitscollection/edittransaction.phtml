@@ -1,0 +1,81 @@
+<style type="text/css">
+    #content{width: auto !important}
+    legend{font-weight: bold; float: left;}
+    fieldset{border: none; height: 50px; vertical-align: bottom}
+    fieldset input {margin-left: 5px; float: left}
+    fieldset input[type='checkbox'] {margin-top: 11px}
+#id-form {margin-top: 50px}    
+#id-form th {width:607px}
+#page-heading {margin-left: 0px}
+
+table.data{width:1000px}
+table.data th{text-align: left !important;}
+#total_amount-label, #print-label{text-align: right !important;}
+#total_amount-label label, #print-label label{margin-right: 30px}
+</style>
+<div id="page-heading"><h1>Edit Transaction</h1></div>
+<table class="data">
+    <tr>
+        <th width="100px">Chit Code</th>
+        <th width="100px">Token</th>
+        <th width="100px">Installment</th>
+        <th width="100px">Chital name</th>
+        <th width="100px">Amount</th>
+        <th width="100px">Fine</th>
+        <th>&nbsp;</th>
+    </tr>
+</table>
+<?php echo $this->form ?>
+
+<script>
+/*
+ * function for calculate the total amount to pay
+ */
+ $(document).ready(function(){
+
+    //iterate through each textboxes and add keyup
+    //handler to trigger sum event
+    $(".inp-amount").each(function() {
+
+        $(this).keyup(function(){
+            calculateSum();
+        });
+    });
+    /*
+     * 
+     */
+    $(".inp-discount").each(function() {
+        $(this).keyup(function(){
+           // calculateSum();
+           str = this.id;
+           id = str.replace("di_", "")              
+         if(parseInt($('#di_'+id).val()))
+             diff_amount = parseInt($('#hd_di_'+id).val()) - parseInt($('#di_'+id).val());
+         else    
+              diff_amount = parseInt($('#hd_di_'+id).val()); 
+               
+         $('#am_'+id).val( parseInt($('#hd_am_'+id).val()) + parseInt(diff_amount));                                  
+           
+           
+           calculateSum();
+        });
+    });
+ 
+ });
+
+ function calculateSum() {
+        var sum = 0;
+        var discount = 0;
+        var total = 0;
+        //iterate through each textboxes and add the values
+        $(".inp-amount").each(function() {
+            //add only if the value is number
+            if(!isNaN(this.value) && this.value.length!=0) {
+                sum += parseFloat(this.value);
+            }
+        });        
+        //.toFixed() method will roundoff the final sum to 2 decimal places
+        $("#total_amount").val(sum.toFixed(2));
+    }
+
+</script>

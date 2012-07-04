@@ -1,0 +1,46 @@
+<style type="text/css">
+    legend{font-weight: bold; float: left; padding-top: 11px; width:250px;}
+    fieldset{border: none; height: 50px; vertical-align: bottom}
+    fieldset input {margin-left: 5px; float: left}
+    fieldset input[type='checkbox'] {margin-top: 11px}
+    .total_sum {
+    margin-left:125px;
+}
+</style>
+<div id="page-heading"><h1>Pay Installments</h1></div>
+<?php echo $this->form ?>
+<script>
+
+/*
+ * function for calculate the total amount to pay
+ */
+$(document).ready(function(){
+ 
+        //iterate through each textboxes and add keyup
+        //handler to trigger sum event
+        $(".inp-amount").each(function() {
+ 
+            $(this).keyup(function(){
+                calculateSum();
+            });
+        });
+ 
+    });
+
+ function calculateSum() {
+ 
+        var sum = 0;
+        //iterate through each textboxes and add the values
+        $(".inp-amount").each(function() {
+ 
+            //add only if the value is number
+            if(!isNaN(this.value) && this.value.length!=0) {
+                sum += parseFloat(this.value);
+            }
+ 
+        });
+        //.toFixed() method will roundoff the final sum to 2 decimal places
+        $("#total_amount").val(sum.toFixed(2));
+    }
+
+</script>

@@ -1,0 +1,36 @@
+<div id="page-heading">
+    <h1>Payment Details</h1>
+ </div>
+<table class="data">
+ <tr>
+     <th>Installment</th>
+     <th>Installment Date</th>
+     <th>Payed Date</th>
+     <th>Installment amount</th>
+     <th>Fine</th>
+     <th>Amount_received</th>     
+ </tr>
+    <?php       
+   
+    foreach($this->data as $installment_data):          
+    ?>
+     <tr class="<?php print (!$this->getHelper('PartialLoop')->view->altrow ^= 1) ? 'odd' : '';?>">
+         
+    <td><?php echo $installment_data['installment']; ?></td>
+    <td><?php echo date('d-m-Y',$installment_data['installment_date']); ?></td>
+    <td><?php echo ($installment_data['payed_date'] == '')? 'Nil':date('d-m-Y',$installment_data['payed_date']); ?></td>
+    <td><?php echo $installment_data['amount']; ?></td>
+    <td>0</td>
+    <td><?php echo ($installment_data['payed_date'] == '')? 'Pending':$installment_data['amount_received']; ?></td>
+    <?php 
+    endforeach;
+    ?>
+</tr>
+</table>
+
+<script>
+function print(){ 
+    $("#frmChitWise").attr("action", "<?php echo $this->baseUrl() ?>/admin/print/chitwise"); 
+    $('#frmChitWise').submit();   
+}
+</script>

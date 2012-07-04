@@ -1,0 +1,47 @@
+
+<html>
+<head>
+<title>Print bill</title>
+<link href="<?=$this->baseUrl()?>/css/print.css" rel="stylesheet" type="text/css" media="all" />
+    <script type="text/javascript"> 
+        function printMe() {
+            document.getElementById('print').innerHTML = '';
+            window.print();  
+        } 
+    </script>
+</head>
+<body>
+
+<div style="width:500px;">
+ <?php    
+    $string = '';
+    foreach($this->data as $datas):
+        foreach ($datas as $data):    
+		   $string .= '<ul>';
+				$string .= '<li style="width:50%">';
+                                    $string .= 	'<p>' . $data['first_name'] . ' ' . $data['last_name'] . '</p>';
+                                    $string .= 	'<p>&nbsp;</p>'; 
+                                    $string .= 	'<p>' . $data['chit_code'] .'&nbsp;&nbsp;&nbsp;&nbsp;'.date('d-m-Y', $data['payed_on']).'</p>'; 
+                                    $string .= 	'<p> Inst No' . $data['installment'] .'</p>'; 
+                                    $string .= 	'<p>Inst Amt' .$data['installment_amount'] .'</p>'; 
+                                    $string .= 	'<p>Dividend Amt' .($data['installment_amount'] - $data['amount_to_pay']) .'</p>'; 
+                                    $string .= 	'<p>' .$data['amount_received'] . '</p>'; 
+				$string .= '</li>';
+                                    $string .= 	'<p>' . $data['first_name'] . ' ' . $data['last_name'] . '</p>';
+                                    $string .= 	'<p>&nbsp;</p>'; 
+                                    $string .= 	'<p>' . $data['chit_code'] .'&nbsp;&nbsp;&nbsp;&nbsp;'.date('d-m-Y', $data['payed_on']).'</p>'; 
+                                    $string .= 	'<p> Inst No' . $data['installment'] .'</p>'; 
+                                    $string .= 	'<p>Inst Amt' .$data['installment_amount'] .'</p>'; 
+                                    $string .= 	'<p>Dividend Amt' .($data['installment_amount'] - $data['amount_to_pay']) .'</p>'; 
+                                    $string .= 	'<p>' .$data['amount_received'] . '</p>'; 
+				$string .= '</li>';
+			$string .= '</ul>';	
+        endforeach;
+      endforeach; 
+      echo $string;
+ ?>
+    <div id="print">
+        <input type="button" value="Print" onclick="printMe();" /> 
+    </div>
+
+</body>

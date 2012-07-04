@@ -1,0 +1,116 @@
+<html>
+<head>
+    <style type="text/css">
+        @media screen {
+
+        body {
+             background-color: #778899;
+             color: #373832;
+             font: 700 16px Arial, Sans-Serif;
+        } }
+
+        @media print {
+        .no-print { display: none; }
+        body { 
+             background: #fff;  
+             color: #000000;
+             font: 500 13px 'Lucida Console', 'courier new', monospace; 
+        } }
+    </style>
+ 
+    <script type="text/javascript"> 
+        function printMe() {            
+            document.getElementById('print').innerHTML = '';
+            window.print();  
+        } 
+    </script>
+</head>
+<body>
+
+<table border="3" cellspacing="5" cellpadding="5">
+    <tr>
+     <th>Token</th>
+     <th>Customer</th>
+     <th>Mobile</th>
+     <th>Agent</th>
+     <th>collection type</th>
+   <?php 
+    $columns = array();
+    $pending_per_installment = array();
+         
+    foreach($this->installmentDetails as $installmentData):   
+        $installment = $installmentData['installment'];
+            echo '<th>'. $installment.': '.date('M Y', strtotime($installmentData['installment_date'])) . '</th>';        
+        $pending_per_installment[$installment] = 0; 
+    endforeach;      
+    ?>
+     <th>Pending</th>
+     <th>Amount-paid</th>
+ </tr>
+    <?php       
+    $total_pending  = 0;   
+    $total_paid     = 0;
+    foreach($this->data as $data):          
+    ?>
+     <tr class="<?php print (!$this->getHelper('PartialLoop')->view->altrow ^= 1) ? 'odd' : '';?>">
+         <td><?php echo $data['user_details']['token']; ?></td>
+         <td><?php echo $data['user_details']['first_name'].' '.$data['user_details']['last_name']; ?></td>
+         <td><?php echo $data['user_details']['mobile']; ?></td>
+         <td><?php echo $data['user_details']['agent_name']; ?></td>
+         <td><?php echo ($data['user_details']['collection_type']==1)?'Monthly':'Daily'; ?></td>
+     <?php 
+     $paid = 0;
+     $pending = 0;         
+     foreach($data['installments_details'] as $installment_data):
+         $installment = $installment_data['installment'];  
+         //calclulating amount pending and paid
+         $pending += $installment_data['amount_to_pay'];; 
+         $paid    += $installment_data['amount_received'];
+        
+         
+         if($installment >= $this->from_installment && $installment <= $this->to_installment){
+             //per installment pending
+             if(!isset($pending_per_installment[$installment]))
+                 $pending_per_installment[$installment] = 0;
+             
+            echo'<td>';
+             if($installment_data['payment_status']== 'C'){
+                 echo date('d-m-Y',$installment_data['payed_date']);
+                 $paid += $installment_data['amount'];
+             }elseif($installment_data['payment_status']== 'R'){            
+               echo date('d-m-y',$installment_data['payed_date']) . '<br>' . $installment_data['amount_to_pay'];
+                $pending_per_installment[$installment] += $installment_data['amount_to_pay'];
+             }else{
+                echo $installment_data['amount_to_pay'];     
+                $pending_per_installment[$installment] += $installment_data['amount_to_pay'];
+             }
+             echo'</td>';  
+           }
+       endforeach;            
+       ?>
+         <td><?php echo $pending; 
+         $total_pending += $pending;
+         ?></td><td><?php echo $paid; 
+         $total_paid += $paid;
+         ?></td>
+     </tr>
+    <?php 
+endforeach;
+    ?>
+</tr>
+<td colspan="5">Total</td>
+<?php 
+foreach($pending_per_installment as $pending_data):  
+    echo '<td>'.$pending_data.'</td>';     
+endforeach; ?>
+<td><?php echo $total_pending; ?></td>
+<td><?php echo $total_paid; ?></td>
+      </tr>
+</table>
+    
+<div id="print">
+    <input type="button" value="Print" onclick="printMe();" /> 
+</div>
+
+</body>
+</html>

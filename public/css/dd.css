@@ -1,0 +1,95 @@
+/************** Skin 2 *********************/
+.dd2 {
+	background:#FFF;
+	padding:8px 20px 8px 10px;
+	border:#c8c8c8 1px solid!important;
+	color:#363636;
+	position:relative;
+	z-index:99!important;
+	white-space:nowrap!important;
+}
+.dd2 .ddTitle {
+	text-indent:0;
+	cursor:default;
+}
+.dd2 .ddTitle span.arrow {
+	background:transparent url(../images/icon-arrow.gif) no-repeat 0 0;
+	float:right;
+	display:inline-block;
+	width:19px;
+	height:16px;
+	cursor:pointer;
+	top:11px;
+	_top:6px;
+	position:absolute;
+	right:8px;
+	text-align:left!important;
+}
+.dd2 .ddTitle span.arrow:hover {
+	background-position: 0 0!important;
+}
+.dd2 .ddTitle span.ddTitleText {
+	text-indent:1px;
+	overflow:hidden;
+	font-size:15px;
+	text-align:left!important;
+}
+.dd2 .ddTitle span.ddTitleText img {
+	text-align:left;
+	padding:0 2px 0 0;
+}
+.dd2 .ddTitle img.selected {
+	padding:0 2px 0 0;
+	vertical-align:top;
+}
+.dd2 .ddChild {
+	position:absolute!important;
+	border:1px solid #c3c3c3;
+	border-top:0!important;
+	display:none;
+	margin:0!important;
+	padding:0!important;
+	top:32px!important;
+	width:auto;
+	overflow:auto;
+	overflow-x:hidden !important;
+	background-color:#ffffff;
+	font-size:12px;
+	text-align:left!important;
+	white-space:nowrap!important;
+	z-index:9999!important;
+}
+.dd2 .ddChild .opta a, .dd2 .ddChild .opta a:visited {
+	padding-left:10px
+}
+.dd2 .ddChild a {
+	display:block;
+	padding:2px 0 2px 3px;
+	text-decoration:none;
+	color:#000;
+	overflow:hidden;
+	white-space:nowrap;
+	cursor:pointer;
+	text-align:left!important;
+}
+.dd2 .ddChild a:hover {
+	background-color:#0C7AC7;
+	color:#FFF!important;
+	text-shadow:#0a86d6 1px 1px;
+}
+.dd2 .ddChild a img {
+	border:0;
+	padding:0 2px 0 0;
+	vertical-align:middle;
+}
+.dd2 .ddChild a.selected {
+	background-color:#0C7AC7;
+	color:#FFF!important;
+	text-shadow:#0a86d6 1px 1px;
+}
+.dd2 .borderTop {
+	border-top:1px solid #c3c3c3 !important;
+}
+.dd2 .noBorderTop {
+	border-top:none 0 !important
+}

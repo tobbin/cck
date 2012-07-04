@@ -1,0 +1,75 @@
+<div id="page-heading">
+    <h1>Agent Wise reports</h1>
+    <?php echo $this->form; ?>
+</div>
+
+<table class="data">
+ <tr>
+     <th>Chits code</th>
+     <th>Token</th>
+     <th>Customer</th>
+     <th>Mobile</th>
+     <th>collection type</th>
+     <th>Amount Paid</th>
+     <th>Pending</th>
+     <th>Current</th>
+     <th>Total To Pay</th>
+    </tr>
+    <?php       
+    $total_pending  = 0;   
+    $total_paid     = 0;
+    $total_current  = 0;   
+    $total_to_pay   = 0;    
+    $current_amount = 0;
+    foreach($this->data as $data):          
+    ?>
+         <tr class="<?php print (!$this->getHelper('PartialLoop')->view->altrow ^= 1) ? 'odd' : '';?>">
+         <td><?php echo $data['user_details']['chit_code']; ?></td>
+         <td><a href="<?php echo $this->baseUrl() ?>/admin/report/chitalpaymentdetails/chital/<?php echo $data['user_details']['chital_id']?>/chit/<?php echo $data['user_details']['chit_id']?>"><?php echo $data['user_details']['token']; ?></a></td>
+         <td><?php echo $data['user_details']['first_name'].' '.$data['user_details']['last_name']; ?></td>
+         <td><?php echo $data['user_details']['mobile']; ?></td>
+         <td><?php echo ($data['user_details']['collection_type']==1)?'Monthly':'Daily'; ?></td>
+          <?php 
+     $paid = 0;
+     $pending = 0;         
+     foreach($data['installments_details'] as $installment_data):
+                 
+         //calclulating amount pending and paid
+         if($installment_data['status'] == 'P')
+            $pending += $installment_data['amount_to_pay'];
+         if($installment_data['status'] == 'R')
+            $current_amount = $installment_data['amount_to_pay'];      
+         
+         $paid    += $installment_data['amount_received'];        
+         endforeach;            
+      ?>
+         <td><?php echo $paid; 
+         $total_paid += $paid;
+         ?></td>
+         <td><?php echo $pending; 
+         $total_pending += $pending;
+         ?></td>
+         <td><?php echo $current_amount; 
+         $total_current += $current_amount ?></td>
+         <td><?php echo $current_amount + $pending; 
+         $total_to_pay += $current_amount + $pending; ?></td>
+     </tr>    
+         <?php 
+endforeach;
+    ?>
+</tr>
+<tr>
+<td colspan="5">Total</td>
+<td><?php echo $total_pending; ?></td>
+<td><?php echo $total_paid; ?></td>
+<td><?php echo $total_current; ?></td>
+<td><?php echo $total_to_pay; ?></td>
+</tr>
+</table>
+
+<script>
+function print(){ 
+    $("#frmAgentWise").attr("action", "<?php echo $this->baseUrl() ?>/admin/print/agentwise"); 
+    $('#frmAgentWise').submit();   
+}
+</script>

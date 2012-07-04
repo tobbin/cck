@@ -1,0 +1,132 @@
+<div id="page-heading">
+    <h1>Agent Wise reports</h1>
+    <?php echo $this->form; ?>
+</div>
+
+<table class="data">
+ <tr>
+     <th>Chits code</th>
+     <th>Token</th>
+     <th>Customer</th>
+     <th>Mobile</th>
+     <th>collection type</th>
+     <?php 
+    $columns = array();
+    $pending_per_installment = array();
+    $j = 0;
+    $head_from_date = $from_date = strtotime($this->from_date);
+    $to_date       = strtotime($this->to_date);
+    while( $head_from_date <= $to_date)
+    {
+         echo '<th>' . date('M Y',  $head_from_date) . '</th>';         
+         $head_from_date = strtotime("+1 month",  $head_from_date);
+    }          
+    ?>
+    <th>Pending</th><th>Amount-paid</th>
+    </tr>
+    <?php       
+    $total_pending  = 0;
+    $total_paid     = 0;
+    foreach($this->data as $data):          
+    ?>
+         <tr class="<?php print (!$this->getHelper('PartialLoop')->view->altrow ^= 1) ? 'odd' : '';?>">
+         <td><?php echo $data['user_details']['chit_code']; ?></td>
+         <td><?php echo $data['user_details']['token']; ?></td>
+         <td><?php echo $data['user_details']['first_name'].' '.$data['user_details']['last_name']; ?></td>
+         <td><?php echo $data['user_details']['mobile']; ?></td>
+         <td><?php echo ($data['user_details']['collection_type']==1)?'Monthly':'Daily'; ?></td>
+         <?php 
+         $paid = 0;
+         $pending = 0;  
+         $string = ''; 
+         $begining_flag = true;
+         foreach($data['installments_details'] as $installment_data):
+             $installment_date = $installment_data['installment_date']; 
+             $month_key = date('Ym', $installment_data['installment_date']);
+                              
+            //calclulating amount pending and paid
+             $pending += $installment_data['amount_to_pay'];
+             $paid    += $installment_data['amount_received'];
+       
+             if($installment_date >= $from_date && $installment_date <= $to_date){
+                 $end_installment_date = $installment_date; 
+                  //inserting blank td in begining              
+                  if($from_date <= $installment_date && $begining_flag == true){                  
+                      $td_from_date = $from_date;
+                      while($td_from_date <= $installment_date)
+                      {
+                            if(date('m-y',$td_from_date) != date('m-y',$installment_date))
+                                 $string .='<td>0</td>';         
+                             $td_from_date = strtotime("+1 month",  $td_from_date);
+                      }   
+                  }
+                  $begining_flag = false;
+                  //end printing blank td
+                  
+                
+                //per installment pending
+                 if(!isset($pending_per_month[$month_key]))
+                     $pending_per_month[$month_key] = 0;
+                $string .='<td>';
+                 if($installment_data['payment_status']== 'C'){
+                     $string .= date('d-m-Y', $installment_data['payed_date']);                    
+                 }elseif($installment_data['payment_status']== 'R'){            
+                   $string .= date('d-m-y', $installment_data['payed_date']) . '<br>' . $installment_data['amount_to_pay'];
+                    $pending_per_month[$month_key] += $installment_data['amount_to_pay'];
+                 }else{
+                    $string .= date('d-m-y',$installment_date) . '<br>' .$installment_data['amount_to_pay'];     
+                    $pending_per_month[$month_key] += $installment_data['amount_to_pay'];
+                 }
+                 $string .='</td>';  
+               }
+           endforeach;  
+           
+           //inserting blank td in the end              
+              if($end_installment_date <= $to_date){                 
+                  while($end_installment_date <= $to_date)
+                  {
+                      if(date('m-y', $end_installment_date) != date('m-y',$to_date))
+                          $string .='<td>0</td>';  
+                         
+                      $end_installment_date = strtotime("+1 month",   $end_installment_date);
+                  }   
+              }               
+             echo $string;
+           ?>
+         <td><?php echo $pending; 
+                $total_pending += $pending;
+         ?></td><td><?php echo $paid; 
+                $total_paid += $paid;
+         ?></td>
+     </tr>
+    <?php 
+endforeach;
+    ?>
+</tr>
+<td colspan="5">Total</td>
+<?php 
+    $pending_from_date = $from_date;
+    while ($pending_from_date <= $to_date)
+    {
+       echo'<td>'; 
+       $pending_month_key = date('Ym', $pending_from_date);  
+       echo (isset ($pending_per_month[$pending_month_key]))?$pending_per_month[$pending_month_key]:0;       
+       $pending_from_date  = strtotime("+1 month",  $pending_from_date );
+       echo'</td>';
+    } 
+//foreach($pending_per_month as $pending_data):  
+//    echo '<td>'.$pending_data.'</td>';
+//     $total_pending += $pending_data;
+//endforeach; ?>
+<td><?php echo $total_pending; ?></td>
+<td><?php echo $total_paid; ?></td>
+<td></td>
+      </tr>
+</table>
+
+<script>
+function print(){ 
+    $("#frmAgentWise").attr("action", "<?php echo $this->baseUrl() ?>/admin/print/agentwise"); 
+    $('#frmAgentWise').submit();   
+}
+</script>

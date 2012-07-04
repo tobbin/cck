@@ -1,0 +1,62 @@
+<?php
+    $url = "{$this->baseUrl()}/admin/employee/grid";
+?>
+<script type="text/javascript">
+    
+$(document).ready(function(){
+    $(document).pngFix( );
+    $("#flexme").flexigrid({
+       url: '<?=$url?>',
+       dataType: 'json',
+       colModel : [
+               {display: 'No', name :'id', width : 30, sortable :true, align: 'left'},
+               {display: 'Name', name :'first_name', width : 180,sortable : true, align: 'left'},
+               {display: 'Phone', name :'mobile', width : 100,sortable : true, align: 'left'},
+               {display: 'Designation', name :'designation', width : 100,sortable : true, align: 'left'},
+               {display: 'Options', name :'options', width : 100,sortable : true, align: 'left'}               
+           ],
+	buttons : [
+		{name: 'Add New Employee', bclass: 'Add', onpress : test},
+                {name: 'Add New User', bclass: 'Add', onpress : test},
+		{separator: true}
+		],
+        searchitems : [
+            {display: 'Name', name : 'first_name'}
+            ],
+       sortname: "first_name",
+       sortorder: "asc",
+       usepager: true,
+       title: 'Employees',
+       useRp: true,
+        rp: 10,
+        onSubmit: addFormData,
+        showTableToggleBtn: true,
+        width: 700,
+        height: 200
+    });
+     $('#employeeSearch').submit(function (){
+        $('#flexme').flexOptions({newp: 1}).flexReload();
+        return false;
+    })
+});
+function test(com, grid) {
+    var id = $('.trSelected td div:first-child').html();   
+    if (com == 'Add New Employee') {               
+            location.href='<?php echo $this->baseUrl() ?>/admin/employee/add/';
+    } else if (com == 'Add New User') {
+            location.href='<?php echo $this->baseUrl() ?>/admin/users/add';
+    } 
+}
+function addFormData(){
+//passing a form object to serializeArray will get the valid data from all the objects, but, if the you pass a non-form object, you have to specify the input elements that the data will come from
+var dt = $('#employeeSearch').serializeArray();
+$("#flexme").flexOptions({params: dt});
+return true;
+}
+
+</script>
+<div id="page-heading">
+		<h1>Employees</h1>
+	</div>
+<?php echo $this->form; ?>
+<table id="flexme"></table>

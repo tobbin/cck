@@ -1,0 +1,55 @@
+<?php
+    $url = "{$this->baseUrl()}/admin/chits/chitalgrid/chits/{$this->chit_id}";
+?>
+<script type="text/javascript">
+    
+$(document).ready(function(){
+    $(document).pngFix( );
+    $("#flex1").flexigrid({
+       url: '<?=$url?>',
+       dataType: 'json',
+       colModel : [
+               {display: 'No', name :'id', width : 20, sortable :true, align: 'left'},
+               {display: 'Token', name :'token', width : 30, sortable :true, align: 'left'},
+               {display: 'Name', name :'first_name', width : 150,sortable : true, align: 'left'},
+               {display: 'House Name', name :'house_name', width : 100,sortable : true, align: 'left'},
+               {display: 'Phone', name :'mobile', width : 100,sortable : true, align: 'left'},
+               {display: 'Agent', name :'agent', width : 100,sortable : true, align: 'left'},
+               {display: 'Options', name :'options', width : 150,sortable : true, align: 'left'}               
+           ],
+	buttons : [
+		{name: 'Add New User', bclass: 'Add', onpress : test},
+                {name: 'Add Chital', bclass: 'Edit', onpress : test},               
+		{separator: true}
+		],
+        searchitems : [		
+		{display: 'Name', name : 'first_name', isdefault: true}
+		],
+       sortname: "first_name",
+       sortorder: "asc",
+       usepager: true,
+       title: 'Chitals',
+       useRp: false,
+       rp: 10,
+       showTableToggleBtn: true,
+       width: 700,
+       height: 300
+});
+});
+function test(com, grid) {
+    var id = $('.trSelected td div:first-child').html();
+    var chit_id = "<?php echo $this->chit_id; ?>";
+        if (com == 'Add Chital') {               
+                location.href='<?php echo $this->baseUrl() ?>/admin/chits/addchital/chit_id/' + chit_id;
+        } else if (com == 'Add New User') {
+                location.href='<?php echo $this->baseUrl() ?>/admin/users/add';
+        } else if (com == 'Delete') {
+                location.href='<?php echo $this->baseUrl() ?>/admin/users/delete/id/' + id;
+        }
+}
+</script>
+<div id="page-heading">
+		<h1>Chitals</h1>
+	</div>
+
+<table id="flex1"></table>

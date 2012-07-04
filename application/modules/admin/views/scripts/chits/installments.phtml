@@ -1,0 +1,52 @@
+<table id="flex1" style="display:none"></table>
+<script type="text/javascript">
+    $("#flex1").flexigrid({
+	url: '<?php echo $this->baseUrl() ?>/admin/chits/installmentgrid/chit_id/<?php echo $this->chitId ?>' ,
+	dataType: 'json',
+	colModel : [                
+		{display: 'Installment', name : 'installment', width : 120, sortable : true, align: 'left'},
+                {display: 'Installment date', name : 'installment_date', width : 120, sortable : true, align: 'left'},
+		{display: 'Amount', name : 'amount', width : 130, sortable : true, align: 'left'},
+                {display: 'Status', name : 'status', width : 130, sortable : true, align: 'left'},
+                {display: 'Options', name : 'options', width : 130, sortable : true, align: 'left'}
+		],
+	buttons : [            
+		{name: 'Add new chits', bclass: 'add', onpress : test},               		
+		{separator: true}
+		],
+	searchitems : [
+		{display: 'Chit code', name : 'chit_code'},
+		{display: 'Code', name : 'chit_code', isdefault: true}
+		],
+	sortname: "chit_code",
+	sortorder: "asc",
+	usepager: true,
+	title: 'Chits',
+	useRp: true,
+	rp: 15,
+	showTableToggleBtn: true,
+	width: 700,
+	height: 200
+});  
+
+$(document).ready(function(){
+    $(document).pngFix( );
+});
+function test(com, grid) {
+var id = $('.trSelected td div:first-child').html();
+        if (com == 'Edit') {
+                
+                location.href='<?php echo $this->baseUrl() ?>/admin/chits/edit/id/' + id;
+        } else if (com == 'Add new chits') {
+                location.href='<?php echo $this->baseUrl() ?>/admin/chits/add';
+        } else if (com == 'Delete') {
+                location.href='<?php echo $this->baseUrl() ?>/admin/chits/delete/id/' + id;
+        }
+}
+</script><?php
+
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+?>

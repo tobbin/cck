@@ -1,0 +1,48 @@
+<?php
+    $url = "{$this->baseUrl()}/admin/users/grid";
+?>
+<script type="text/javascript">
+$(document).ready(function(){
+    $(document).pngFix( );
+    $("#flex1").flexigrid({
+       url: '<?=$url?>',
+       dataType: 'json',
+       colModel : [
+               {display: 'No', name :'id', width : 30, sortable :true, align: 'left'},
+               {display: 'Name', name :'first_name', width : 180,sortable : true, align: 'left'},
+               {display: 'House Name', name :'house_name', width : 150,sortable : true, align: 'left'},
+               {display: 'Phone', name :'mobile', width : 100,sortable : true, align: 'left'},
+               {display: 'Options', name :'options', width : 100,sortable : true, align: 'left'}               
+           ],
+	buttons : [
+		{name: 'Add New User', bclass: 'Add', onpress : test},               
+		{separator: true}
+		],
+       sortname: "first_name",
+       sortorder: "asc",
+       usepager: true,
+       title: 'Users',
+       useRp: false,
+       rp: 15,
+       showTableToggleBtn: true,
+       width: 700,
+       height: 200
+});
+});
+function test(com, grid) {
+    var id = $('.trSelected td div:first-child').html();
+    var chit_id = "<?php echo $this->chit_id; ?>";
+        if (com == 'Add Chital') {               
+                location.href='<?php echo $this->baseUrl() ?>/admin/chits/addchital/chit_id/' + chit_id;
+        } else if (com == 'Add New User') {
+                location.href='<?php echo $this->baseUrl() ?>/admin/users/add';
+        } else if (com == 'Delete') {
+                location.href='<?php echo $this->baseUrl() ?>/admin/users/delete/id/' + id;
+        }
+}
+</script>
+<div id="page-heading">
+		<h1>Users</h1>
+	</div>
+
+<table id="flex1"></table>

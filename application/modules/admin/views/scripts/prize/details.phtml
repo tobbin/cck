@@ -1,0 +1,42 @@
+<table id="flex1" style="display:none"></table>
+<script type="text/javascript">
+    $("#flex1").flexigrid({
+	url: '<?php echo $this->baseUrl() ?>/admin/prize/detailsgrid',
+	dataType: 'json',
+	colModel : [                
+		{display: 'Installment', name : 'installment', width : 50, sortable : true, align: 'left', formatter:testamal},		
+                {display: 'Token', name : 'token', width : 120, sortable : true, align: 'left'},
+                {display: 'Chital', name : 'first_name', width : 120, sortable : true, align: 'left'},
+		{display: 'Prized', name : 'prize_type', width : 130, sortable : true, align: 'left'},
+                {display: 'amount', name : 'prize_amount', width : 130, sortable : true, align: 'left'},
+                {display: 'Options', name : 'options', width : 130, sortable : true, align: 'left'}
+                ],
+	buttons : [            
+		{name: 'Add new Prize', bclass: 'add', onpress : test},               		
+		{separator: true}
+		],
+	searchitems : [
+		{display: 'Chit code', name : 'chit_code'},
+		{display: 'Code', name : 'chit_code', isdefault: true}
+		],
+	sortname: "chit_code",
+	sortorder: "asc",
+	usepager: true,
+	title: 'Chits',
+	useRp: true,
+	rp: 15,
+	showTableToggleBtn: true,
+	width: 700,
+	height: 200
+});  
+function testamal() {
+    alert("here");
+    return 'here';
+}
+$(document).ready(function(){
+    $(document).pngFix( );
+});
+function test() {
+    location.href='<?php echo $this->baseUrl() ?>/admin/prize/add/chit_id/' + <?=$this->chit_id?>;
+}
+</script>

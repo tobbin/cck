@@ -1,0 +1,53 @@
+<?php
+    $url = "{$this->baseUrl()}/admin/chitscollection/chitalgrid";
+?>
+<script type="text/javascript">    
+$(document).ready(function(){
+    $(document).pngFix( );
+    $("#flexme").flexigrid({
+       url: '<?=$url?>',
+       dataType: 'json',
+       colModel : [
+               {display: 'No', name :'id', width : 20, sortable :true, align: 'left'},
+               {display: 'Chit code', name :'chit_code', width : 60, sortable :true, align: 'left'},
+               {display: 'Token', name :'token', width : 30, sortable :true, align: 'left'},
+               {display: 'Customer', name :'first_name', width : 150,sortable : true, align: 'left'},               
+               {display: 'Phone', name :'mobile', width : 100,sortable : true, align: 'left'},               
+               {display: 'Agent', name :'agent', width : 100,sortable : true, align: 'left'},               
+               {display: 'Options', name :'options', width : 150,sortable : true, align: 'left'}               
+           ],
+	buttons : [		            
+		{separator: true}
+		],
+        searchitems : [		
+		{display: 'Name', name : 'first_name', isdefault: true}
+		],
+
+       sortname: "first_name",
+       sortorder: "asc",
+       usepager: true,
+       title: 'Customers',
+       useRp: true,
+       rp: 10,
+       onSubmit: addFormData,
+       showTableToggleBtn: true,
+       width: 700,
+       height: 200
+    });
+     $('#chitalSearch').submit(function (){
+        $('#flexme').flexOptions({newp: 1}).flexReload();
+        return false;
+    })
+});
+function addFormData(){
+    //passing a form object to serializeArray will get the valid data from all the objects, but, if the you pass a non-form object, you have to specify the input elements that the data will come from
+    var dt = $('#chitalSearch').serializeArray();
+    $("#flexme").flexOptions({params: dt});
+    return true;
+}
+</script>
+<div id="page-heading">
+ <h1>Customer Wise Payment</h1>
+</div>
+<?php echo $this->form; ?>
+<table id="flexme"></table>

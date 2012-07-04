@@ -1,0 +1,40 @@
+<?php
+    $url = "{$this->baseUrl()}/admin/pincode/grid";
+?>
+<script type="text/javascript">
+$(document).ready(function(){
+    $(document).pngFix( ); 
+    $("#flex1").flexigrid({
+	url: '<?=$url?>',
+	dataType: 'json',
+	colModel : [
+        {display: 'No', name : 'id', width : 20, sortable : true, align: 'left'},
+		{display: 'Street', name : 'street', width : 50, sortable : true, align: 'left'},
+		{display: 'Pin', name : 'pin', width : 120, sortable : true, align: 'left'},
+        {display: 'Options', name : 'options', width : 130, sortable : true, align: 'left'}
+		],
+	buttons : [            
+		{name: 'Add new pin', bclass: 'add', onpress : test},               		
+		{separator: true}
+		],
+	sortname: "pin",
+	sortorder: "asc",
+	usepager: true,
+	title: 'Pincode',
+	useRp: true,
+	rp: 15,
+	showTableToggleBtn: true,
+	width: 700,
+	height: 200
+});  
+});
+function test(com) {
+ if (com == 'Add new pin') {
+                location.href='<?php echo $this->baseUrl() ?>/admin/pincode/add';
+        }
+}
+</script>
+<div id="page-heading">
+		<h1>Pincodes</h1>
+	</div>
+<table id="flex1"></table>

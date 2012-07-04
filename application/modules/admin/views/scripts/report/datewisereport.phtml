@@ -1,0 +1,30 @@
+<div id="page-heading">
+		<h1>Chits date wise report</h1>
+	</div>
+
+<table class="data">
+ <tr>
+     <th>No</th><th>Category</th><th>Type</th><th>Date</th><th>Amount</th>
+    <?php    
+    $i = 0;
+    $credit = 0;
+    $debit  = 0;
+    foreach($this->data as $data):        
+        $i++;
+        if ($data['transaction_type'] == 'C')
+            $credit += $data['amount'];
+        elseif ($data['transaction_type'] == 'D') 
+            $debit += $data['amount'];
+    ?>
+     <tr class="<?php print (!$this->getHelper('PartialLoop')->view->altrow ^= 1) ? 'odd' : '';?>">
+         <td><?php echo $i; ?></td>
+         <td><?php echo $data['category']; ?></td>
+         <td><?php echo ($data['transaction_type'] == 'C')?'Credit':'Debit'; ?></td>
+         <td><?php echo $data['trans_date']; ?></td>         
+         <td><?php echo $data['amount']; ?></td>
+    <?php 
+endforeach;
+    ?>   
+     <tr><td>&nbsp;</td><td>Debit : <?php echo $debit; ?></td><td >Credit: <?php echo $credit;?></td><td colspan="2">Balance <?php echo ($credit>$debit)?'Credit':'Debit'; echo ' : '.abs($credit-$debit);
+        ;?></td></tr>
+</table>

@@ -1,0 +1,47 @@
+<table id="flex1" style="display:none"></table>
+<script type="text/javascript">
+    $("#flex1").flexigrid({
+	url: '<?php echo $this->baseUrl() ?>/admin/chits/chitsgrid',
+	dataType: 'json',
+	colModel : [
+                {display: 'No', name : 'id', width : 20, sortable : true, align: 'left'},
+		{display: 'Chit code', name : 'chit_code', width : 50, sortable : true, align: 'left'},
+		{display: 'Start date', name : 'start_date', width : 100, sortable : true, align: 'left'},
+                {display: 'Current installment', name : 'current_installment', width : 120, sortable : true, align: 'left'},
+		{display: 'Next chit', name : 'next_chit_date', width : 100, sortable : true, align: 'left'},
+                {display: 'Options', name : 'options', width : 250, sortable : true, align: 'left'}
+		],
+	buttons : [            
+		{name: 'Add new chits', bclass: 'add', onpress : test},               		
+		{separator: true}
+		],
+	searchitems : [
+		{display: 'Chit code', name : 'chit_code'},
+		{display: 'Code', name : 'chit_code', isdefault: true}
+		],
+	sortname: "chit_code",
+	sortorder: "asc",
+	usepager: true,
+	title: 'Chits',
+	useRp: true,
+	rp: 15,
+	showTableToggleBtn: true,
+	width: 700,
+	height: 200
+});  
+
+$(document).ready(function(){
+    $(document).pngFix( );
+});
+function test(com, grid) {
+var id = $('.trSelected td div:first-child').html();
+        if (com == 'Edit') {
+                
+                location.href='<?php echo $this->baseUrl() ?>/admin/chits/edit/id/' + id;
+        } else if (com == 'Add new chits') {
+                location.href='<?php echo $this->baseUrl() ?>/admin/chits/add';
+        } else if (com == 'Delete') {
+                location.href='<?php echo $this->baseUrl() ?>/admin/chits/delete/id/' + id;
+        }
+}
+</script>

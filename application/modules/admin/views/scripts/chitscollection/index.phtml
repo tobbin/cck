@@ -1,0 +1,73 @@
+<?php
+    $url = "{$this->baseUrl()}/admin/chitscollection/collectiondetailsgrid";
+?>
+<script type="text/javascript">
+    
+$(document).ready(function(){           
+    $("#flexme").flexigrid({
+       url: '<?=$url?>',
+       dataType: 'json',
+       colModel : [
+               {display: 'No', name :'id', width : 30, sortable :true, align: 'left'},
+               {display: 'Date', name :'date', width : 180,sortable : true, align: 'left'},
+               {display: 'Payed To', name :'agentName', width : 150,sortable : true, align: 'left'},
+               {display: 'Chit', name :'chit', width : 100,sortable : true, align: 'left'},
+               {display: 'Chital', name :'chital', width : 100,sortable : true, align: 'left'},
+               {display: 'Phone', name :'phone', width : 100,sortable : true, align: 'left'},
+               {display: 'Amount', name :'amount', width : 50,sortable : true, align: 'left'},
+               {display: 'Options', name :'options', width : 100,sortable : true, align: 'left'}               
+           ],
+	buttons : [
+		{name: 'Chit wise', bclass: 'Add', onpress : test},
+                {name: 'Agent wise', bclass: 'Add', onpress : test},
+                {name: 'Customer wise', bclass: 'Add', onpress : test},
+		{separator: true}
+		],
+
+        searchitems : [
+            {display: 'category', name : 'category'},
+            {display: 'date', name : 'date', isdefault: true}
+            ],
+        sortname: "date",
+        sortorder: "DESC",
+        usepager: true,
+        title: 'Collection Details',
+        useRp: true,
+        rp: 10,
+        onSubmit: addFormData,
+        showTableToggleBtn: true,
+        width: 900,
+        height: 200
+        
+    }); 
+    
+   $('#transSearch').submit(function (){
+        $('#flexme').flexOptions({newp: 1}).flexReload();
+        return false;
+    })
+});
+function test(com, grid) {
+    var id = $('.trSelected td div:first-child').html();  
+        if (com == 'Chit wise') {               
+                location.href='<?php echo $this->baseUrl() ?>/admin/chitscollection/chitwise';
+        }else if (com == 'Customer wise') {               
+                location.href='<?php echo $this->baseUrl() ?>/admin/chitscollection/customerwise';
+        }else if (com == 'Agent wise') {               
+                location.href='<?php echo $this->baseUrl() ?>/admin/chitscollection/agentwise';
+        }
+}
+
+function addFormData(){
+//passing a form object to serializeArray will get the valid data from all the objects, but, if the you pass a non-form object, you have to specify the input elements that the data will come from
+var dt = $('#collectionSearch').serializeArray();
+$("#flexme").flexOptions({params: dt});
+return true;
+}
+
+</script>
+
+<div id="page-heading">
+		<h1>Collection Details</h1>
+	</div>
+<?php echo $this->form; ?>
+<table id="flexme"></table>

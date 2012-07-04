@@ -1,0 +1,54 @@
+<?php
+    $url = "{$this->baseUrl()}/admin/report/agentgrid";
+?>
+<script type="text/javascript">
+    
+$(document).ready(function(){
+    $(document).pngFix( );
+    $("#flexme").flexigrid({
+       url: '<?=$url?>',
+       dataType: 'json',
+       colModel : [
+               {display: 'No', name :'id', width : 30, sortable :true, align: 'left'},
+               {display: 'Name', name :'first_name', width : 180,sortable : true, align: 'left'},
+               {display: 'Phone', name :'mobile', width : 100,sortable : true, align: 'left'},
+               {display: 'Designation', name :'designation', width : 100,sortable : true, align: 'left'},
+               {display: 'Options', name :'options', width : 100,sortable : true, align: 'left'}               
+           ],
+        searchitems : [
+            {display: 'Name', name : 'first_name'}
+            ],
+       sortname: "first_name",
+       sortorder: "asc",
+       usepager: true,
+       title: 'Employees',
+       useRp: true,
+        rp: 10,
+        onSubmit: addFormData,
+        showTableToggleBtn: true,
+        width: 700,
+        height: 200
+    });
+     $('#agentSearch').submit(function (){
+        $('#flexme').flexOptions({newp: 1}).flexReload();
+        return false;
+    })
+});
+function test(com, grid) {
+    var id = $('.trSelected td div:first-child').html();  
+    var designation = $('.trSelected td div:nth-child(2)').html();  
+    alert(id+'<>'+designation);
+}
+function addFormData(){
+//passing a form object to serializeArray will get the valid data from all the objects, but, if the you pass a non-form object, you have to specify the input elements that the data will come from
+var dt = $('#agentSearch').serializeArray();
+$("#flexme").flexOptions({params: dt});
+return true;
+}
+
+</script>
+<div id="page-heading">
+		<h1>Employees</h1>
+	</div>
+<?php echo $this->form; ?>
+<table id="flexme"></table>

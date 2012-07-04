@@ -1,0 +1,43 @@
+<table id="flex1" style="display:none"></table>
+<script type="text/javascript">
+    $("#flex1").flexigrid({
+	url: '<?php echo $this->baseUrl() ?>/admin/bonus/grid',
+	dataType: 'json',
+	colModel : [
+                {display: 'No', name : 'id', width : 20, sortable : true, align: 'left'},
+		{display: 'Chit code', name : 'chit_code', width : 50, sortable : true, align: 'left', formatter:testamal},		
+                {display: 'Current installment', name : 'current_installment', width : 120, sortable : true, align: 'left'},
+		{display: 'Next chit', name : 'next_chit_date', width : 130, sortable : true, align: 'left'},
+                {display: 'Bonus Type', name : 'options', width : 130, sortable : true, align: 'left'}
+		],
+	buttons : [           
+		{name: 'Add Bonus Type', bclass: 'add', onpress : test},               		
+		{separator: true}
+		],
+	searchitems : [
+		{display: 'Chit code', name : 'chit_code'},
+		{display: 'Code', name : 'chit_code', isdefault: true}
+		],
+	sortname: "chit_code",
+	sortorder: "asc",
+	usepager: true,
+	title: 'Chits',
+	useRp: true,
+	rp: 15,
+	showTableToggleBtn: true,
+	width: 700,
+	height: 200
+});  
+function testamal() {
+    alert("here");
+    return 'here';
+}
+$(document).ready(function(){
+    $(document).pngFix( );
+});
+function test(com) {
+ if (com == 'Add Bonus Type') {
+                location.href='<?php echo $this->baseUrl() ?>/admin/bonustype/add';
+        }
+}
+</script>
